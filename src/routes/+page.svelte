@@ -1,4 +1,6 @@
 <script>
+    import { enhance } from "$app/forms";
+    import { fly, slide } from 'svelte/transition'
     let { data, form } = $props();
 
 </script>
@@ -10,7 +12,8 @@
         <p class="error">{form.error}</p>
     {/if}
     <!--To add a create todo list, we add forms to the eqn-->
-    <form method="POST" action="?/create">
+    <!--By using use:enhance, it doesnt reload the entire page on submit. Essentially updating page instead of reloading it-->
+    <form method="POST" action="?/create" use:enhance>
             <input 
                 type="text" 
                 name="description"
@@ -24,8 +27,8 @@
 
     <ul class="todos">
         {#each data.todos as todo (todo.id)}
-        <li>
-            <form method="POST" action="?/delete">
+        <li in:fly={{ y: 20}} out:slide>
+            <form method="POST" action="?/delete" use:enhance>
                 <input type="hidden" name="todoid" value={todo.id}>
                 <span>{todo.description}</span>
                 <button class="delete">delete</button>
