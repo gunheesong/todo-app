@@ -7,7 +7,7 @@
     <h1>todos</h1>
 
     <!--To add a create todo list, we add forms to the eqn-->
-    <form method="POST">
+    <form method="POST" action="?/create">
         <label>add a todo:
             <input 
                 type="text" 
@@ -21,8 +21,15 @@
 
     <ul class="todos">
         {#each data.todos as todo (todo.id)}
-
-            <li>{todo.description}</li>
+        <li>
+            <form method="POST" action="?/delete">
+                <input type="hidden" name="todoid" value={todo.id}>
+                <span>{todo.description}</span>
+                <button>delete</button>
+            </form>
+            
+        </li>
+            
         {/each}
     </ul>
 

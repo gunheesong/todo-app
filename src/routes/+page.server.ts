@@ -15,8 +15,14 @@ export function load({cookies}) {
 }
 //receives POST method form, 
 export const actions = {
-    default: async ({ cookies, request }) => {
+    create: async ({ cookies, request }) => {
         const data = await request.formData();
         db.createTodo(cookies.get('userid'), data.get('description'));
+    },
+
+    delete: async ({ cookies, request }) => {
+        const data = await request.formData();
+        db.deleteTodo(cookies.get('userid'), data.get('todoid'));
     }
+
 }
