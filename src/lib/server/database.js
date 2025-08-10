@@ -15,8 +15,15 @@ export function getTodos(userid) {
 }
 
 export function createTodo(userid, description) {
+	//Check if user entered text is empty
+	if (description === '') {
+		throw new Error('todo must have some description');
+	}
 	const todos = db.get(userid);
-
+	//Check if task already exists
+	if (todos.find((todo) => todo.description === description)) {
+		throw new Error('todo must be unique');
+	}
 	todos.push({
 		id: crypto.randomUUID(),
 		description,
