@@ -3,23 +3,40 @@
     import { fly, slide } from 'svelte/transition'
     let { data, form } = $props();
 
+    let creating = $state(false);
+    /*let deleting = $state([]); <- Not gonna do it for the deleting form, but you can implement similarly to use:enhance on the delete form.*/
+    
+    
+
 </script>
 
 <div class="centered">
     <h1>Todos</h1>
 
+    {#if creating === true}
+        <p>saving...</p>
+    {/if}
     {#if form?.error}
         <p class="error">{form.error}</p>
     {/if}
     <!--To add a create todo list, we add forms to the eqn-->
     <!--By using use:enhance, it doesnt reload the entire page on submit. Essentially updating page instead of reloading it-->
-    <form method="POST" action="?/create" use:enhance>
+    <form method="POST" action="?/create" use:enhance={() => {
+        creating = true;
+
+        return async ({ update }) => {
+            await update();
+            creating = false;
+        }
+
+    }}>
             <input 
                 type="text" 
                 name="description"
                 autocomplete="off"
                 placeholder="add a todo"
                 required
+                disabled={creating}
                 value={form?.description ?? ''}
             />
         <button>submit</button>
@@ -38,6 +55,7 @@
             
         {/each}
     </ul>
+    
 
 </div>
 

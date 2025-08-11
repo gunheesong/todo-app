@@ -17,6 +17,7 @@ export function load({cookies}) {
 //receives POST method form, for the try and catch errors, you can view it in the .svelte file via the form props.
 export const actions = {
     create: async ({ cookies, request }) => {
+        await new Promise((fulfil) => setTimeout(fulfil, 1000));
         const data = await request.formData();
         try {
             db.createTodo(cookies.get('userid'), data.get('description'));    
@@ -30,6 +31,7 @@ export const actions = {
     },
 
     delete: async ({ cookies, request }) => {
+        await new Promise((fulfil) => setTimeout(fulfil, 1000));
         const data = await request.formData();
         db.deleteTodo(cookies.get('userid'), data.get('todoid'));
     }
